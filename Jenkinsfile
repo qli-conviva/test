@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            yaml: '''
+            yaml '''
                 apiVersion: v1
                 kind: Pod
                 spec:
@@ -10,9 +10,9 @@ pipeline {
                       image: busybox
                       imagePullPolicy: Always
             '''
-            name: 'jenkins-agent'
-            namespace: 'jenkins'
-            podRetention: 'always'
+            name 'jenkins-agent'
+            namespace 'jenkins'
+            podRetention 'always'
         }
     }
     options {
