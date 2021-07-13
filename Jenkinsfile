@@ -44,10 +44,10 @@ pipeline {
             }
             input {
                 message "Should we continue?"
-                ok "Yes, we should."
+                ok "yes"
             }
             steps {
-                container('ubuntu') {
+                container('busybox') {
                     sh 'sleep 10m'
                 }
             }
