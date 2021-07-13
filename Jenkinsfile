@@ -10,7 +10,7 @@ pipeline {
                       image: busybox
                       imagePullPolicy: Always
             '''
-            name 'jenkins-agent'
+            workingDir '/home/jenkins/agent'
             namespace 'jenkins'
             podRetention 'always'
         }
