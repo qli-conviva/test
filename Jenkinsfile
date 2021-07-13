@@ -2,14 +2,17 @@ pipeline {
     agent {
         kubernetes {
             yaml: '''
+                apiVersion: v1
                 kind: Pod
                 spec:
-                containers:
-                  - name: ubuntu
-                    image: ubuntu:20.04
-                    imagePullPolicy: Always
-    '''
-            podRetention: always()
+                  containers:
+                    - name: busybox
+                      image: busybox
+                      imagePullPolicy: Always
+            '''
+            name: 'jenkins-agent'
+            namespace: 'jenkins'
+            podRetention: 'always'
         }
     }
     options {
@@ -26,23 +29,27 @@ pipeline {
     }
     stages {
         stage('Build') {
-            container('ubuntu') {
-                sh 'sleep 10m'
+            steps {
+                container('busybox') {
+                    sh 'echo $POD_CONTAINER ... 1'
+                }
+                container('busybox') {
+                    sh 'echo $POD_CONTAINER ... 2'
+                }
             }
         }
         stage('Deploy') {
             when {
-                branch 'master'
+                branch 'main'
             }
             input {
                 message "Should we continue?"
                 ok "Yes, we should."
-                parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-                }
             }
-            container('ubuntu') {
-                sh 'sleep 10m'
+            steps {
+                container('ubuntu') {
+                    sh 'sleep 10m'
+                }
             }
         }
     }
