@@ -12,7 +12,7 @@ pipeline {
             '''
             workingDir '/home/jenkins/agent'
             namespace 'jenkins'
-            podRetention Always()
+            podRetention always()
         }
     }
     options {
