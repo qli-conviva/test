@@ -8,7 +8,7 @@ pipeline {
                   containers:
                     - name: busybox
                       image: gcr.io/google-containers/busybox:latest
-                      imagePullPolicy: Always
+                      imagePullPolicy: IfNotPresent
             '''
             workingDir '/home/jenkins/agent'
             namespace 'jenkins'
@@ -20,9 +20,6 @@ pipeline {
         disableConcurrentBuilds()
         timeout(time: 1, unit: 'HOURS')
         retry(3)
-    }
-    environment {
-        env = 'dev'
     }
     parameters {
         string(name: 'PRODUCT', description: 'Which product')
@@ -39,9 +36,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            when {
-                branch 'main'
-            }
             input {
                 message "Should we continue?"
                 ok "yes"
@@ -51,11 +45,6 @@ pipeline {
                     sh 'sleep 10m'
                 }
             }
-        }
-    }
-    post {
-        always {
-            echo 'I will always say Hello again!'
         }
     }
 }
