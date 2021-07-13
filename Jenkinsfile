@@ -9,14 +9,18 @@ pipeline {
                     - name: busybox
                       image: gcr.io/google-containers/busybox:latest
                       imagePullPolicy: IfNotPresent
+                      command:
+                        - sleep
+                      args:
+                        - 1d
             '''
             workingDir '/home/jenkins/agent'
             namespace 'jenkins'
-            podRetention always()
+            podRetention onFailure()
         }
     }
     options {
-        buildDiscarder(logRotator(numToKeepStr: '3'))
+        buildDiscarder(logRotator(numToKeepStr: '30'))
         disableConcurrentBuilds()
         timeout(time: 1, unit: 'HOURS')
         retry(3)
