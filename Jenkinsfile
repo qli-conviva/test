@@ -7,7 +7,7 @@ pipeline {
                 spec:
                   containers:
                     - name: busybox
-                      image: busybox
+                      image: gcr.io/google-containers/busybox:latest
                       imagePullPolicy: Always
             '''
             workingDir '/home/jenkins/agent'
